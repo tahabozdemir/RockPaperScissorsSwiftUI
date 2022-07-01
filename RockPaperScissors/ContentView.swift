@@ -22,6 +22,7 @@ extension View{
 }
 struct ContentView: View {
     let choices:[String] = ["Rock","Paper","Scissors"]
+    let emojis = ["🪨", "📃", "✂️"]
     @State private var opponentsChoice:String = ""
     @State private var scoreAlert:String = ""
     @State private var score:Int = 0
@@ -48,32 +49,18 @@ struct ContentView: View {
                     .font(.custom("AmericanTypeWriter", size: 25))
                 Spacer()
                 HStack(spacing:35){
-                    
-                    Button{
-                        makeChoise(choise: choices[0])
-                        remainingGame()
-                    } label: {
-                        Text("🪨")
-                            .choiceStyle()
-                    }
-                    Button{
-                        makeChoise(choise: choices[1])
-                        remainingGame()
-                    } label: {
-                        Text("📃")
-                            .choiceStyle()
-                    }
-                    Button {
-                        makeChoise(choise: choices[2])
-                        remainingGame()
-                    } label: {
-                        Text("✂️")
-                            .choiceStyle()
+                    ForEach(0..<choices.count ,id: \.self) { choice in
+                        Button{
+                            makeChoise(choise: choices[choice])
+                            remainingGame()
+                        } label: {
+                            Text("\(emojis[choice])")
+                                .choiceStyle()
+                        }
                     }
                     
                 }
                 .padding(.bottom,30)
-                
             }
         }
         .alert(scoreAlert, isPresented: $showingScore) {
@@ -115,7 +102,6 @@ struct ContentView: View {
                 scoreAlert = "Something went wrong."
             }
         }
-        
         else if choise == "Scissors"{
             switch opponentsChoice{
             case "Paper":
